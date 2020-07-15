@@ -76,7 +76,7 @@ const routes = [
   {
     name: 'admin',
     component: AdminLayout,
-    onlyIf: { guard: userIsAdmin, redirect: '/login' },
+    onlyIf: [{ guard: userIsAdmin, redirect: '/login' }],
     nestedRoutes: [
       { name: 'index', component: AdminIndex },
       {
@@ -169,7 +169,7 @@ function userIsAdmin() {
   component: About,
   layout: PublicLayout,
   redirectTo: 'company',
-  onlyIf: { guard: userIsAdmin, redirect: '/login' },
+  onlyIf: [{ guard: userIsAdmin, redirect: '/login' }],
   lang: { es: 'acerca-de' },
   nestedRoutes: [
     { name: 'our-values', component: CompanyValues, lang: { es: 'nuestros-valores' } }
@@ -190,7 +190,7 @@ _Either a component or a layout should be specified. Both can not be empty._
 
 **redirectTo**: A url or pathname (https://yourwebsite.com) or (/my-product).
 
-**onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _redirect_.
+**onlyIf**: A list of objects to conditionally render a route. If all guards return true then route is rendered. If at least one guard is false it redirects to _redirect_ of the corresponding guard.
 
 **lang**: An object with route names localised. Check [Localisation](#localisation)
 

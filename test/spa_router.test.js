@@ -1592,6 +1592,39 @@ describe('onlyIf', function () {
     })
   })
 
+  describe('when all guards are true', function () {
+    beforeEach(function () {
+      routes = [
+        {
+          name: '/admin',
+          component: 'AdminLayout',
+          nestedRoutes: [
+            { name: 'index', component: 'AdminIndex' },
+            { name: 'private', component: 'PrivateComponent' },
+          ],
+          onlyIf: [
+            { guard: thisIsTrue, redirect: '/login' },
+            { guard: thisIsTrue, redirect: '/login' },
+            { guard: thisIsTrue, redirect: '/login' }
+          ],
+        },
+
+        { name: 'login', component: 'Login' },
+      ]
+
+      pathName = 'http://web.app/admin'
+      SpaRouter(routes, pathName).setActiveRoute()
+    })
+
+    it('should render admin', function () {
+      expect(routeIsActive('/admin')).to.be.true
+    })
+
+    it('should render login', function () {
+      expect(global.window.history.state.page).to.equal('/admin')
+    })
+  })
+
   describe('when guard is false', function () {
     beforeEach(function () {
       routes = [
@@ -1620,6 +1653,40 @@ describe('onlyIf', function () {
       expect(global.window.history.state.page).to.equal('/login')
     })
   })
+})
+
+describe('when one guard is false', function () {
+  beforeEach(function () {
+    routes = [
+      {
+        name: '/admin',
+        component: 'AdminLayout',
+        nestedRoutes: [
+          { name: 'index', component: 'AdminIndex' },
+          { name: 'private', component: 'PrivateComponent' },
+        ],
+        onlyIf: [
+          { guard: thisIsTrue, redirect: '/login' },
+          { guard: thisIsFalse, redirect: '/login' },
+          { guard: thisIsTrue, redirect: '/login' },
+        ],
+      },
+
+      { name: 'login', component: 'Login' },
+    ]
+
+    pathName = 'http://web.app/admin'
+    SpaRouter(routes, pathName).setActiveRoute()
+  })
+
+  it('should render login', function () {
+    expect(routeIsActive('/login')).to.be.true
+  })
+
+  it('should render login', function () {
+    expect(global.window.history.state.page).to.equal('/login')
+  })
+})
 })
 
 describe('localisedRoute', function () {

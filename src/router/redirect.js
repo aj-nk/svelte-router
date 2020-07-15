@@ -1,7 +1,7 @@
 const { RouterGuard } = require('./guard')
 
 function RouterRedirect(route, currentPath) {
-  const guard = RouterGuard(route.onlyIf)
+  const guards = route.onlyIf instanceof Array ? route.onlyIf : [route.onlyIf]
 
   function path() {
     let redirectTo = currentPath
@@ -9,8 +9,13 @@ function RouterRedirect(route, currentPath) {
       redirectTo = route.redirectTo
     }
 
-    if (guard.valid() && guard.redirect()) {
-      redirectTo = guard.redirectPath()
+    for (let g of guards) {
+      const guard = RouterGuard(g)
+
+      if (guard.valid() && guard.redirect()) {
+        redirectTo = guard.redirectPath()
+        break
+      }
     }
 
     return redirectTo
