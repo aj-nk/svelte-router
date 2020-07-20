@@ -1687,7 +1687,6 @@ describe('when one guard is false', function () {
     expect(global.window.history.state.page).to.equal('/login')
   })
 })
-})
 
 describe('localisedRoute', function () {
   beforeEach(function () {
