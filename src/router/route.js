@@ -14,7 +14,7 @@ function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, 
       layout: routeInfo.layout,
       queryParams: urlParser.queryParams,
       namedParams: namedParams(),
-      customParams: routeInfo.customParams,
+      customParams: routeInfo.customParams ?? {},
       path,
       language
     }
