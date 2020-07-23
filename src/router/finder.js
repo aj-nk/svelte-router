@@ -54,6 +54,10 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
             urlParser,
             namedPath: routerPath.namedPath(),
           })
+
+          Object.keys(currentRoute.namedParams).forEach((key, index) => {
+            redirectTo = redirectTo.replace(`:${key}`, currentRoute.namedParams[key])
+          })
         }
 
         if (route.nestedRoutes && route.nestedRoutes.length > 0 && routerPath.pathNames.length > 0) {
